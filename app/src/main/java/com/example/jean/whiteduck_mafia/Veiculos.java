@@ -12,7 +12,6 @@ public class Veiculos {
     }
 
     public void carregarVeiculos() {
-
         caminhao = new Veiculo();
         caminhao.sprite = this.scene.createSprite(R.mipmap.caminhao, 1, 1);
         caminhao.sprite.setScreenPercent(18, 30);

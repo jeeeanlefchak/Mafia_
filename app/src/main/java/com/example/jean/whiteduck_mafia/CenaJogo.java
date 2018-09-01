@@ -122,21 +122,20 @@ public class CenaJogo extends AGScene {
     }
 
     public void verificaColisao(){
-//        if(caminhao.bVisible && caminhao.collide(carro)){
-////            caminhao.vrPosition.setY(AGScreenManager.iScreenHeight + (AGScreenManager.iScreenHeight / 2));
-//            caminhao.bVisible = false;
-//            carro.bVisible = false;
-//            explosao.vrPosition.setXY(carro.vrPosition.getX(), carro.vrPosition.getY());
-//            explosao.bVisible = true;
-//
-//        }
+        if(this.veiculos.caminhao.sprite.bVisible && this.veiculos.caminhao.sprite.collide(carro)){
+//            caminhao.vrPosition.setY(AGScreenManager.iScreenHeight + (AGScreenManager.iScreenHeight / 2));
+            this.veiculos.caminhao.sprite.bVisible = false;
+            carro.bVisible = false;
+            explosao.vrPosition.setXY(carro.vrPosition.getX(), carro.vrPosition.getY());
+            explosao.bVisible = true;
+        }
     }
 
     private void atualizaCaminhao() {
-//        caminhao.vrPosition.setY(caminhao.vrPosition.getY() + caminhao.vrDirection.getX() * (velocidade / 3));
-//        if (caminhao.vrPosition.getY() < -caminhao.getSpriteHeight() / 2) {
-//            caminhao.vrPosition.setY(AGScreenManager.iScreenHeight + (AGScreenManager.iScreenHeight / 2));
-//        }
+        this.veiculos.caminhao.sprite.vrPosition.setY(this.veiculos.caminhao.sprite.vrPosition.getY() + this.veiculos.caminhao.sprite.vrDirection.getX() * (velocidade / 3));
+        if (this.veiculos.caminhao.sprite.vrPosition.getY() < -this.veiculos.caminhao.sprite.getSpriteHeight() / 2) {
+            this.veiculos.caminhao.sprite.vrPosition.setY(AGScreenManager.iScreenHeight + (AGScreenManager.iScreenHeight / 2));
+        }
     }
 
     private void controlaVelocidade() {
