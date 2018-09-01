@@ -1,4 +1,4 @@
-package com.example.jean.tapegandofogobicho;
+package com.example.jean.whiteduck_mafia;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("com.example.jean.tapegandofogobicho", appContext.getPackageName());
+        assertEquals("com.example.jean.whiteduck_mafia", appContext.getPackageName());
     }
 }

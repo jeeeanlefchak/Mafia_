@@ -1,4 +1,4 @@
-package com.example.jean.tapegandofogobicho;
+package com.example.jean.whiteduck_mafia;
 
 import org.junit.Test;
 
