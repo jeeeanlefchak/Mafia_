@@ -159,4 +159,5 @@ public abstract class AGScene
 			vrSprites.get(iIndex).reloadTexture(AGGameManager.vrOpenGL);
 		}
 	}
+
 }

@@ -17,7 +17,7 @@ public class AGTouchScreen implements OnTouchListener
 {
 	//Attributes
 	public float fPosX = 0, fPosY = 0;
-	private int iCurrentEvent = 0;
+	private int iCurrentEvent = -20;
 	public boolean bBackButtonClicked = false;
 	
 	/********************************************
