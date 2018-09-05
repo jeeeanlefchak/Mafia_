@@ -22,6 +22,8 @@ public class CenaJogo extends AGScene {
     int velocidade = 0;
     AGTimer tempoVelocidade = null;
 
+    private float ultimaPosicaoXTela = 0;
+
     CenaJogo(AGGameManager agGameManager) {
         super(agGameManager);
     }
@@ -68,6 +70,7 @@ public class CenaJogo extends AGScene {
 //        explosao.bVisible = false;
 
         tempoVelocidade = new AGTimer(100);
+        ultimaPosicaoXTela = AGScreenManager.iScreenWidth / 2;
     }
 
     @Override
@@ -86,6 +89,7 @@ public class CenaJogo extends AGScene {
         this.atualizaCaminhao();
         this.atualizaFundo();
         controlaVelocidade();
+        veiculos.atualizaVeiculos(velocidade);
     }
 
     public void atualizaFundo(){
@@ -102,40 +106,31 @@ public class CenaJogo extends AGScene {
     }
 
     public void controlaCarro(){
-        if (AGInputManager.vrTouchEvents.screenDown()){
-
-            if(AGScreenManager.iScreenWidth / 2 < AGInputManager.vrTouchEvents.fPosX &&
-                    (carro.vrPosition.getX() + carro.getSpriteWidth() < AGScreenManager.iScreenWidth - carro.getSpriteWidth() + 50)){
-                carro.vrDirection.setX(1);
-//                policia.vrPosition.setX(policia.vrPosition.getX() + policia.vrPosition.getX() / 2 ); //esquerda
-            }else if (AGScreenManager.iScreenWidth / 2 > AGInputManager.vrTouchEvents.fPosX &&
-                    (carro.vrPosition.getX() - carro.getSpriteWidth() > carro.getSpriteWidth() -50)){
+        if (AGInputManager.vrTouchEvents.screenDragged()){
+            if (ultimaPosicaoXTela > AGInputManager.vrTouchEvents.fPosX) {
                 carro.vrDirection.setX(-1);
-//                policia.vrPosition.setX(policia.vrPosition.getX() - policia.vrPosition.getX() / 2 );
+            } else if (ultimaPosicaoXTela < AGInputManager.vrTouchEvents.fPosX) {
+                carro.vrDirection.setX(1);
             } else {
                 carro.vrDirection.setX(0);
             }
 
-            carro.vrPosition.setX(carro.vrPosition.getX() + carro.vrDirection.getX() *  (velocidade /2) );
+            carro.vrPosition.setX(carro.vrPosition.getX() + carro.vrDirection.getX() * (velocidade / 3));
+            ultimaPosicaoXTela = AGInputManager.vrTouchEvents.fPosX;
         }
-        this.verificaColisao();
     }
 
     public void verificaColisao(){
-        if(this.veiculos.caminhao.sprite.bVisible && this.veiculos.caminhao.sprite.collide(carro)){
-//            caminhao.vrPosition.setY(AGScreenManager.iScreenHeight + (AGScreenManager.iScreenHeight / 2));
-            this.veiculos.caminhao.sprite.bVisible = false;
-            carro.bVisible = false;
-            explosao.vrPosition.setXY(carro.vrPosition.getX(), carro.vrPosition.getY());
-            explosao.bVisible = true;
-        }
+//        if(this.veiculos.caminhao.sprite.bVisible && this.veiculos.caminhao.sprite.collide(carro)){
+////            caminhao.vrPosition.setY(AGScreenManager.iScreenHeight + (AGScreenManager.iScreenHeight / 2));
+//            this.veiculos.caminhao.sprite.bVisible = false;
+//            carro.bVisible = false;
+//            explosao.vrPosition.setXY(carro.vrPosition.getX(), carro.vrPosition.getY());
+//            explosao.bVisible = true;
+//        }
     }
 
     private void atualizaCaminhao() {
-        this.veiculos.caminhao.sprite.vrPosition.setY(this.veiculos.caminhao.sprite.vrPosition.getY() + this.veiculos.caminhao.sprite.vrDirection.getX() * (velocidade / 3));
-        if (this.veiculos.caminhao.sprite.vrPosition.getY() < -this.veiculos.caminhao.sprite.getSpriteHeight() / 2) {
-            this.veiculos.caminhao.sprite.vrPosition.setY(AGScreenManager.iScreenHeight + (AGScreenManager.iScreenHeight / 2));
-        }
     }
 
     private void controlaVelocidade() {

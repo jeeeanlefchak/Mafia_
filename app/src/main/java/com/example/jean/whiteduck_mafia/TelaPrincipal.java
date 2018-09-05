@@ -19,8 +19,8 @@ public class TelaPrincipal extends AGActivityGame {
         cenaJogo = new CenaJogo(getGameManager());
         cenaSobre = new CenaSobre(getGameManager());
 
-        getGameManager().addScene(cenaJogo); // 1
         getGameManager().addScene(abertura);//0
+        getGameManager().addScene(cenaJogo); // 1
         getGameManager().addScene(cenaSobre);// 2
     }
 }

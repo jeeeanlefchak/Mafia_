@@ -97,9 +97,9 @@ public class AGSoundEffect
 	* Parameters:int
 	* Returns: none
 	******************************************/
-	public void play(int iCodSom)
+	public void play(int iCodSom, boolean loop, float leftVolume, float rightVolume)
 	{
-		vrPool.play(iCodSom, 1.0f, 1.0f, 0, 0, 1);
+		vrPool.play(iCodSom, leftVolume, rightVolume, 0, loop ? -1 : 0, 1);
 	}
 	
 	/*******************************************
