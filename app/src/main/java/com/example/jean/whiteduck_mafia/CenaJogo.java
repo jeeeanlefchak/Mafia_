@@ -107,15 +107,19 @@ public class CenaJogo extends AGScene {
 
     public void controlaCarro(){
         if (AGInputManager.vrTouchEvents.screenDragged()){
-            if (ultimaPosicaoXTela > AGInputManager.vrTouchEvents.fPosX) {
+            if (ultimaPosicaoXTela > (AGInputManager.vrTouchEvents.fPosX + 10)) {
                 carro.vrDirection.setX(-1);
-            } else if (ultimaPosicaoXTela < AGInputManager.vrTouchEvents.fPosX) {
+            } else if (ultimaPosicaoXTela < (AGInputManager.vrTouchEvents.fPosX - 10)) {
                 carro.vrDirection.setX(1);
             } else {
                 carro.vrDirection.setX(0);
             }
 
-            carro.vrPosition.setX(carro.vrPosition.getX() + carro.vrDirection.getX() * (velocidade / 3));
+            carro.vrPosition.setX(carro.vrPosition.getX() + carro.vrDirection.getX() * (velocidade / 2));
+            ultimaPosicaoXTela = AGInputManager.vrTouchEvents.fPosX;
+        }
+
+        if (AGInputManager.vrTouchEvents.screenClicked()) {
             ultimaPosicaoXTela = AGInputManager.vrTouchEvents.fPosX;
         }
     }
