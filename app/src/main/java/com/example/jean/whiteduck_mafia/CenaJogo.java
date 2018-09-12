@@ -13,15 +13,13 @@ public class CenaJogo extends AGScene {
     AGSprite fundo = null;
     AGSprite fundo2 = null;
     AGSprite carro = null;
-    AGSprite policia = null;
-//    AGSprite caminhao = null;
     AGSprite explosao = null;
-
+    int valorPlacar = 0;
     Veiculos veiculos = null;
-
+    AGSprite[] placar = null;
     int velocidade = 0;
     AGTimer tempoVelocidade = null;
-
+    Boolean pararJogo = false;
     private float ultimaPosicaoXTela = 0;
 
     CenaJogo(AGGameManager agGameManager) {
@@ -51,6 +49,18 @@ public class CenaJogo extends AGScene {
         veiculos = new Veiculos(this);
         veiculos.carregarVeiculos();
 
+        placar = new AGSprite[8];
+        for (int iIndex = 0; iIndex < 8; iIndex++) {
+            placar[iIndex] = createSprite(R.mipmap.fonte, 4, 4);
+            placar[iIndex].setScreenPercent(8, 8);
+            placar[iIndex].vrPosition.setY(AGScreenManager.iScreenHeight - placar[iIndex].getSpriteHeight() / 2);
+            placar[iIndex].vrPosition.setX(placar[iIndex].getSpriteWidth() / 2 + iIndex * placar[iIndex].getSpriteWidth());
+            placar[iIndex].bAutoRender = false;
+            for (int i = 0; i < 10; i++) {
+                placar[iIndex].addAnimation(1, false, i);
+            }
+        }
+
 //        policia = createSprite(R.mipmap.policia,2,1);
 //        policia.setScreenPercent(12,20);
 //        policia.vrPosition.setXY(AGScreenManager.iScreenWidth / 2,
@@ -73,6 +83,13 @@ public class CenaJogo extends AGScene {
         ultimaPosicaoXTela = AGScreenManager.iScreenWidth / 2;
     }
 
+    public void render(){
+        super.render();
+        for(AGSprite digito : placar){
+            digito.render();
+        }
+    }
+
     @Override
     public void restart() {
 
@@ -85,25 +102,26 @@ public class CenaJogo extends AGScene {
 
     @Override
     public void loop() {
-        this.controlaCarro();
-        this.atualizaCaminhao();
-        this.atualizaFundo();
-        controlaVelocidade();
-        veiculos.atualizaVeiculos(velocidade);
-        this.verificaColisao();
+        if(!pararJogo) {
+            this.controlaCarro();
+            this.atualizaFundo();
+            controlaVelocidade();
+            veiculos.atualizaVeiculos(velocidade);
+            this.verificaColisao();
+            this.atualizaPlacar();
+        }
     }
 
     public void atualizaFundo(){
-        fundo.vrPosition.setY(fundo.vrPosition.getY() + fundo.vrDirection.getY() * velocidade);
-        fundo2.vrPosition.setY(fundo2.vrPosition.getY() + fundo2.vrDirection.getY() * velocidade);
+            fundo.vrPosition.setY(fundo.vrPosition.getY() + fundo.vrDirection.getY() * velocidade);
+            fundo2.vrPosition.setY(fundo2.vrPosition.getY() + fundo2.vrDirection.getY() * velocidade);
 
-        if (fundo.vrPosition.getY() <  -fundo.getSpriteHeight()/2) {
-            fundo.vrPosition.setY(fundo2.vrPosition.getY() + fundo.getSpriteHeight());
-        }
-        if (fundo2.vrPosition.getY() <  -fundo2.getSpriteHeight()/2) {
-            fundo2.vrPosition.setY(fundo.vrPosition.getY() + fundo2.getSpriteHeight());
-        }
-
+            if (fundo.vrPosition.getY() < -fundo.getSpriteHeight() / 2) {
+                fundo.vrPosition.setY(fundo2.vrPosition.getY() + fundo.getSpriteHeight());
+            }
+            if (fundo2.vrPosition.getY() < -fundo2.getSpriteHeight() / 2) {
+                fundo2.vrPosition.setY(fundo.vrPosition.getY() + fundo2.getSpriteHeight());
+            }
     }
 
     public void controlaCarro(){
@@ -133,11 +151,9 @@ public class CenaJogo extends AGScene {
                 carro.bVisible = false;
                 explosao.vrPosition.setXY(carro.vrPosition.getX(), carro.vrPosition.getY());
                 explosao.bVisible = true;
+                pararJogo = true;
             }
         }
-    }
-
-    private void atualizaCaminhao() {
     }
 
     private void controlaVelocidade() {
@@ -150,4 +166,15 @@ public class CenaJogo extends AGScene {
         }
     }
 
+    private void atualizaPlacar(){
+            valorPlacar++;
+            placar[7].setCurrentAnimation(valorPlacar % 10);
+            placar[6].setCurrentAnimation((valorPlacar % 100) / 10);
+            placar[5].setCurrentAnimation((valorPlacar % 1000) / 100);
+            placar[4].setCurrentAnimation((valorPlacar % 10000) / 1000);
+            placar[3].setCurrentAnimation((valorPlacar % 100000) / 10000);
+            placar[2].setCurrentAnimation((valorPlacar % 1000000) / 100000);
+            placar[1].setCurrentAnimation((valorPlacar % 10000000) / 1000000);
+            placar[0].setCurrentAnimation((valorPlacar % 100000000) / 10000000);
+    }
 }

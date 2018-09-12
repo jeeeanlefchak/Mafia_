@@ -1,5 +1,7 @@
 package com.example.jean.whiteduck_mafia;
 
+import android.util.Log;
+
 import com.example.jean.whiteduck_mafia.AndGraph.AGScene;
 import com.example.jean.whiteduck_mafia.AndGraph.AGScreenManager;
 import com.example.jean.whiteduck_mafia.AndGraph.AGSoundManager;
@@ -26,23 +28,23 @@ public class Veiculos {
         //POSICOES NA DIREITA
         posicoesFaixas.add(getScreenPositionXAtPercentage(57));
         posicoesFaixas.add(getScreenPositionXAtPercentage(74));
-
-        Veiculo caminhao = new Veiculo();
-        caminhao.sprite = this.scene.createSprite(R.mipmap.caminhao, 1, 1);
-        caminhao.sprite.setScreenPercent(18, 30);
-        caminhao.sprite.vrPosition.setX(posicoesFaixas.get(random.nextInt(posicoesFaixas.size())));
-        caminhao.sprite.vrPosition.setY(AGScreenManager.iScreenHeight + (AGScreenManager.iScreenHeight / 2));
-        caminhao.sprite.vrDirection.setY(-1);
-        caminhao.velocidadeRelativa = 50;
-        caminhao.carregarSomMotor("engine1.wav");
-        veiculos.add(caminhao);
         Veiculo carro = new Veiculo();
+        carro = new Veiculo();
+        carro.sprite = this.scene.createSprite(R.mipmap.caminhao, 1, 1);
+        carro.sprite.setScreenPercent(18, 30);
+        carro.sprite.vrPosition.setX(posicoesFaixas.get(random.nextInt(posicoesFaixas.size())));
+        carro.sprite.vrPosition.setY(AGScreenManager.iScreenHeight + (AGScreenManager.iScreenHeight / 2));
+        carro.sprite.vrDirection.setY(-1);
+        carro.velocidadeRelativa = 7;
+        carro.carregarSomMotor("engine1.wav");
+        veiculos.add(carro);
+        carro = new Veiculo();
         carro.sprite = this.scene.createSprite(R.mipmap.car_traffic1,1,1);
         carro.sprite.setScreenPercent(10,15);
         carro.sprite.vrPosition.setX(posicoesFaixas.get(random.nextInt(posicoesFaixas.size())));
         carro.sprite.vrPosition.setY(AGScreenManager.iScreenHeight + (AGScreenManager.iScreenHeight / 2));
         carro.sprite.vrDirection.setY(-1);
-        carro.velocidadeRelativa = 50;
+        carro.velocidadeRelativa = 7;
         veiculos.add(carro);
         carro = new Veiculo();
         carro.sprite = this.scene.createSprite(R.mipmap.car_traffic2,1,1);
@@ -50,7 +52,7 @@ public class Veiculos {
         carro.sprite.vrPosition.setX(posicoesFaixas.get(random.nextInt(posicoesFaixas.size())));
         carro.sprite.vrPosition.setY(AGScreenManager.iScreenHeight);
         carro.sprite.vrDirection.setY(-1);
-        carro.velocidadeRelativa = 65;
+        carro.velocidadeRelativa = 3;
         veiculos.add(carro);
         carro = new Veiculo();
         carro.sprite = this.scene.createSprite(R.mipmap.car_traffic3,1,1);
@@ -58,15 +60,15 @@ public class Veiculos {
         carro.sprite.vrPosition.setX(posicoesFaixas.get(random.nextInt(posicoesFaixas.size())));
         carro.sprite.vrPosition.setY(AGScreenManager.iScreenHeight + (AGScreenManager.iScreenHeight / 2));
         carro.sprite.vrDirection.setY(-1);
-        carro.velocidadeRelativa = 60;
+        carro.velocidadeRelativa = 5;
         veiculos.add(carro);
-        carro = new Veiculo();
-        carro.sprite = this.scene.createSprite(R.mipmap.car_traffic4,1,1);
-        carro.sprite.setScreenPercent(10,15);
-        carro.sprite.vrPosition.setX(posicoesFaixas.get(random.nextInt(posicoesFaixas.size())));
-        carro.sprite.vrPosition.setY(AGScreenManager.iScreenHeight + (AGScreenManager.iScreenHeight / 2));
-        carro.sprite.vrDirection.setY(-1);
-        carro.velocidadeRelativa = 55;
+//        carro = new Veiculo();
+//        carro.sprite = this.scene.createSprite(R.mipmap.car_traffic4,1,1);
+//        carro.sprite.setScreenPercent(10,15);
+//        carro.sprite.vrPosition.setX(posicoesFaixas.get(random.nextInt(posicoesFaixas.size())));
+//        carro.sprite.vrPosition.setY(AGScreenManager.iScreenHeight + (AGScreenManager.iScreenHeight / 2));
+//        carro.sprite.vrDirection.setY(-1);
+//        carro.velocidadeRelativa = 55;
         veiculos.add(carro);
 
     }
@@ -101,10 +103,25 @@ public class Veiculos {
 
             for (int w = 0; w < veiculos.size(); w++) {
                 if (veiculos.get(i).sprite.collide(veiculos.get(w).sprite) && veiculos.get(i).sprite != veiculos.get(w).sprite){
-                    veiculos.get(w).sprite.vrPosition.setX(posicoesFaixas.get(random.nextInt(posicoesFaixas.size())));
+//                    veiculos.get(w).sprite.vrPosition.setX(posicoesFaixas.get(random.nextInt(posicoesFaixas.size())));
+                    // posição 0 para 1
+                    if(veiculos.get(i).sprite.vrPosition.getX() ==  posicoesFaixas.get(0)){
+                        veiculos.get(i).sprite.vrPosition.setX(posicoesFaixas.get(1));
+                    }
+                    //posicao 1 para 0
+                    if(veiculos.get(i).sprite.vrPosition.getX() ==  posicoesFaixas.get(1)){
+                        veiculos.get(i).sprite.vrPosition.setX(posicoesFaixas.get(0));
+                    }
+                    // posição 2 para 3
+                    if(veiculos.get(i).sprite.vrPosition.getX() == posicoesFaixas.get(2)){
+                        veiculos.get(i).sprite.vrPosition.setX(posicoesFaixas.get(3));
+                    }
+                    //posicao 3 para 2
+                    if(veiculos.get(i).sprite.vrPosition.getX() ==  posicoesFaixas.get(3)) {
+                        veiculos.get(i).sprite.vrPosition.setX(posicoesFaixas.get(2));
+                    }
                 }
             }
-
         }
     }
 
