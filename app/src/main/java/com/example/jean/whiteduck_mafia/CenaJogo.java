@@ -44,7 +44,7 @@ public class CenaJogo extends AGScene {
         fundo2.vrDirection.setY(-1);
 
         carro = createSprite(R.mipmap.car1,1,1);
-        carro.setScreenPercent(15, 20);
+        carro.setScreenPercent(12, 19);
         carro.vrPosition.setXY(AGScreenManager.iScreenWidth / 2,
                 AGScreenManager.iScreenHeight / 3 );
 
@@ -52,7 +52,7 @@ public class CenaJogo extends AGScene {
         veiculos = new Veiculos(this);
         veiculos.carregarVeiculos();
         policia = createSprite(R.mipmap.policia,2,1);
-        policia.setScreenPercent(15, 20);
+        policia.setScreenPercent(12, 19);
         policia.vrPosition.setXY(veiculos.posicoesFaixas.get(2),
                 carro.getSpriteHeight() / 3 );
         policia.addAnimation(2,true,0,1);
