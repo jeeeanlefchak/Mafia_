@@ -64,10 +64,10 @@ public class CenaJogo extends AGScene {
 //        caminhao.vrPosition.setY(AGScreenManager.iScreenHeight + (AGScreenManager.iScreenHeight / 2));
 //        caminhao.vrDirection.setX(-1);
 //
-//        explosao = createSprite(R.mipmap.explosao, 4, 2);
-//        explosao.setScreenPercent(15, 9);
-//        explosao.addAnimation(15, false, 0, 1, 2, 3, 4, 5, 6, 7);
-//        explosao.bVisible = false;
+        explosao = createSprite(R.mipmap.explosao, 4, 2);
+        explosao.setScreenPercent(15, 9);
+        explosao.addAnimation(15, false, 0, 1, 2, 3, 4, 5, 6, 7);
+        explosao.bVisible = false;
 
         tempoVelocidade = new AGTimer(100);
         ultimaPosicaoXTela = AGScreenManager.iScreenWidth / 2;
@@ -90,6 +90,7 @@ public class CenaJogo extends AGScene {
         this.atualizaFundo();
         controlaVelocidade();
         veiculos.atualizaVeiculos(velocidade);
+        this.verificaColisao();
     }
 
     public void atualizaFundo(){
@@ -125,13 +126,15 @@ public class CenaJogo extends AGScene {
     }
 
     public void verificaColisao(){
-//        if(this.veiculos.caminhao.sprite.bVisible && this.veiculos.caminhao.sprite.collide(carro)){
-////            caminhao.vrPosition.setY(AGScreenManager.iScreenHeight + (AGScreenManager.iScreenHeight / 2));
-//            this.veiculos.caminhao.sprite.bVisible = false;
-//            carro.bVisible = false;
-//            explosao.vrPosition.setXY(carro.vrPosition.getX(), carro.vrPosition.getY());
-//            explosao.bVisible = true;
-//        }
+        for (int i = 0; i <  veiculos.veiculos.size(); i++) {
+            if (veiculos.veiculos.get(i).sprite.bVisible && veiculos.veiculos.get(i).sprite.collide(carro)) {
+                //            caminhao.vrPosition.setY(AGScreenManager.iScreenHeight + (AGScreenManager.iScreenHeight / 2));
+                this.veiculos.veiculos.get(i).sprite.bVisible = false;
+                carro.bVisible = false;
+                explosao.vrPosition.setXY(carro.vrPosition.getX(), carro.vrPosition.getY());
+                explosao.bVisible = true;
+            }
+        }
     }
 
     private void atualizaCaminhao() {
