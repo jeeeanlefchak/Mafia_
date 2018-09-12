@@ -21,6 +21,7 @@ public class CenaJogo extends AGScene {
     AGTimer tempoVelocidade = null;
     Boolean pararJogo = false;
     private float ultimaPosicaoXTela = 0;
+    AGSprite policia = null;
 
     CenaJogo(AGGameManager agGameManager) {
         super(agGameManager);
@@ -29,6 +30,7 @@ public class CenaJogo extends AGScene {
     @Override
     public void init() {
         setSceneBackgroundColor(1, 0, 0);
+
         fundo = createSprite(R.mipmap.fundoasfalto, 1, 1);
         fundo.setScreenPercent(100, 100);
         fundo.vrPosition.setXY(AGScreenManager.iScreenWidth / 2,
@@ -46,8 +48,14 @@ public class CenaJogo extends AGScene {
         carro.vrPosition.setXY(AGScreenManager.iScreenWidth / 2,
                 AGScreenManager.iScreenHeight / 3 );
 
+
         veiculos = new Veiculos(this);
         veiculos.carregarVeiculos();
+        policia = createSprite(R.mipmap.policia,2,1);
+        policia.setScreenPercent(15, 20);
+        policia.vrPosition.setXY(veiculos.posicoesFaixas.get(2),
+                carro.getSpriteHeight() / 3 );
+        policia.addAnimation(2,true,0,1);
 
         placar = new AGSprite[8];
         for (int iIndex = 0; iIndex < 8; iIndex++) {
@@ -133,13 +141,42 @@ public class CenaJogo extends AGScene {
             } else {
                 carro.vrDirection.setX(0);
             }
-
+            if((carro.vrPosition.getX() - 10) < veiculos.posicoesFaixas.get(0) && (carro.vrPosition.getX() + 10) > veiculos.posicoesFaixas.get(0)){
+                policia.vrPosition.setX(veiculos.posicoesFaixas.get(0));
+            }
+            if((carro.vrPosition.getX() - 10) < veiculos.posicoesFaixas.get(1) && (carro.vrPosition.getX() + 10) > veiculos.posicoesFaixas.get(1)){
+                policia.vrPosition.setX(veiculos.posicoesFaixas.get(1));
+            }
+            if((carro.vrPosition.getX() - 10) < veiculos.posicoesFaixas.get(2) && (carro.vrPosition.getX() + 10) > veiculos.posicoesFaixas.get(2)){
+                policia.vrPosition.setX(veiculos.posicoesFaixas.get(2));
+            }
+            if((carro.vrPosition.getX() - 10) < veiculos.posicoesFaixas.get(3) && (carro.vrPosition.getX() + 10) > veiculos.posicoesFaixas.get(3)){
+                policia.vrPosition.setX(veiculos.posicoesFaixas.get(3));
+            }
             carro.vrPosition.setX(carro.vrPosition.getX() + carro.vrDirection.getX() * (velocidade / 2));
             ultimaPosicaoXTela = AGInputManager.vrTouchEvents.fPosX;
         }
-
         if (AGInputManager.vrTouchEvents.screenClicked()) {
             ultimaPosicaoXTela = AGInputManager.vrTouchEvents.fPosX;
+        }
+        for(int i = 0;i < veiculos.veiculos.size(); i++){
+            if (policia.collide(veiculos.veiculos.get(i).sprite)){
+                if(veiculos.veiculos.get(i).sprite.vrPosition.getX() ==  policia.vrPosition.getX()){
+                    policia.vrPosition.setX(veiculos.posicoesFaixas.get(1));
+                }
+                //posicao 1 para 0
+                if(veiculos.veiculos.get(i).sprite.vrPosition.getX() ==  policia.vrPosition.getX()){
+                    policia.vrPosition.setX(veiculos.posicoesFaixas.get(0));
+                }
+                // posição 2 para 3
+                if(veiculos.veiculos.get(i).sprite.vrPosition.getX() == policia.vrPosition.getX()){
+                    policia.vrPosition.setX(veiculos.posicoesFaixas.get(3));
+                }
+                //posicao 3 para 2
+                if(veiculos.veiculos.get(i).sprite.vrPosition.getX() ==  policia.vrPosition.getX()) {
+                    policia.vrPosition.setX(veiculos.posicoesFaixas.get(2));
+                }
+            }
         }
     }
 
