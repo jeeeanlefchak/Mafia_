@@ -1,4 +1,3 @@
-WhiteDuck Mafia
 Desenvolvedores: Jean Lefchak, Jean Biezus
 
 
