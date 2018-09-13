@@ -199,10 +199,8 @@ public class CenaJogo extends AGScene {
                 restart.bVisible = true;
                 botaoSair.bVisible = true;
                 for (int iIndex = 0; iIndex < 8; iIndex++) {
-                    placar[iIndex].setScreenPercent(8, 8);
                     placar[iIndex].vrPosition.setY(AGScreenManager.iScreenWidth +  AGScreenManager.iScreenWidth / 4);
                     placar[iIndex].vrPosition.setX(placar[iIndex].getSpriteWidth() * 3 + iIndex * placar[iIndex].getSpriteWidth());
-                    placar[iIndex].bAutoRender = false;
                 }
             }
         }
@@ -290,6 +288,14 @@ public class CenaJogo extends AGScene {
         restart.bVisible = false;
         menuOpcoes.bVisible = false;
         botaoSair.bVisible = false;
+        for (int iIndex = 0; iIndex < 8; iIndex++) {
+            placar[iIndex].vrPosition.setY(AGScreenManager.iScreenHeight - placar[iIndex].getSpriteHeight() / 2);
+            placar[iIndex].vrPosition.setX(placar[iIndex].getSpriteWidth() / 2 + iIndex * placar[iIndex].getSpriteWidth());
+        }
+          this.valorPlacar = 0;
+//        tempoVelocidade = new AGTimer(100);
+//        velocidade = 1;
+//        controlaVelocidade();
         pararJogo = false;
     }
 }
