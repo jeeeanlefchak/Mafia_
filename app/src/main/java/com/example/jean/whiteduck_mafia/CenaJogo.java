@@ -25,7 +25,7 @@ public class CenaJogo extends AGScene {
     AGSprite policia = null;
     AGSprite menuOpcoes = null;
     AGSprite restart = null;
-
+    AGSprite botaoSair = null;
     private int sirene;
     private float volumePolicia = 0.0f;
     private AGTimer tempoCarregarSirene = null;
@@ -76,17 +76,6 @@ public class CenaJogo extends AGScene {
         sirene = AGSoundManager.vrSoundEffects.loadSoundEffect("sirene.wav");
         tempoCarregarSirene = new AGTimer(1000);
 
-        for (int iIndex = 0; iIndex < 8; iIndex++) {
-            placar[iIndex] = createSprite(R.mipmap.fonte, 4, 4);
-            placar[iIndex].setScreenPercent(8, 8);
-            placar[iIndex].vrPosition.setY(AGScreenManager.iScreenHeight - placar[iIndex].getSpriteHeight() / 2);
-            placar[iIndex].vrPosition.setX(placar[iIndex].getSpriteWidth() / 2 + iIndex * placar[iIndex].getSpriteWidth());
-            placar[iIndex].bAutoRender = false;
-            for (int i = 0; i < 10; i++) {
-                placar[iIndex].addAnimation(1, false, i);
-            }
-        }
-
         explosao = createSprite(R.mipmap.explosao, 4, 2);
         explosao.setScreenPercent(15, 9);
         explosao.addAnimation(15, false, 0, 1, 2, 3, 4, 5, 6, 7);
@@ -100,11 +89,29 @@ public class CenaJogo extends AGScene {
         menuOpcoes.vrPosition.setXY(AGScreenManager.iScreenWidth / 2,
                 AGScreenManager.iScreenHeight / 2);
 
-        restart = createSprite(R.mipmap.ic_launcher_round,1,1);
-        restart.setScreenPercent(25,25);
+        restart = createSprite(R.mipmap.btn_restart_anim,5,4);
+        restart.setScreenPercent(30,18);
         restart.vrPosition.setXY(AGScreenManager.iScreenWidth / 2,
                 AGScreenManager.iScreenHeight / 2);
+        restart.addAnimation(13,true,0,17);
         restart.bVisible = false;
+
+        botaoSair = createSprite(R.mipmap.btn_exit_anim,5,4);
+        botaoSair.setScreenPercent(30,18);
+        botaoSair.vrPosition.setXY(AGScreenManager.iScreenWidth / 2,
+                restart.vrPosition.fY - restart.getSpriteHeight() / 6 - botaoSair.getSpriteHeight() / 1 );
+        botaoSair.addAnimation(13,true,0,17);
+        botaoSair.bVisible = false;
+        for (int iIndex = 0; iIndex < 8; iIndex++) {
+            placar[iIndex] = createSprite(R.mipmap.fonte, 4, 4);
+            placar[iIndex].setScreenPercent(8, 8);
+            placar[iIndex].vrPosition.setY(AGScreenManager.iScreenHeight - placar[iIndex].getSpriteHeight() / 2);
+            placar[iIndex].vrPosition.setX(placar[iIndex].getSpriteWidth() / 2 + iIndex * placar[iIndex].getSpriteWidth());
+            placar[iIndex].bAutoRender = false;
+            for (int i = 0; i < 10; i++) {
+                placar[iIndex].addAnimation(1, false, i);
+            }
+        }
     }
 
     public void render(){
@@ -190,6 +197,13 @@ public class CenaJogo extends AGScene {
                 pararJogo = true;
                 menuOpcoes.bVisible = true;
                 restart.bVisible = true;
+                botaoSair.bVisible = true;
+                for (int iIndex = 0; iIndex < 8; iIndex++) {
+                    placar[iIndex].setScreenPercent(8, 8);
+                    placar[iIndex].vrPosition.setY(AGScreenManager.iScreenWidth +  AGScreenManager.iScreenWidth / 4);
+                    placar[iIndex].vrPosition.setX(placar[iIndex].getSpriteWidth() * 3 + iIndex * placar[iIndex].getSpriteWidth());
+                    placar[iIndex].bAutoRender = false;
+                }
             }
         }
     }
@@ -259,8 +273,11 @@ public class CenaJogo extends AGScene {
         if (AGInputManager.vrTouchEvents.backButtonClicked()){
             vrGameManager.setCurrentScene(0);
         }
-        if (restart.collide(AGInputManager.vrTouchEvents.getLastPosition())){
+        if (restart.collide(AGInputManager.vrTouchEvents.getLastPosition()) && pararJogo){
             this.novoJogo();
+        }
+        if (botaoSair.collide(AGInputManager.vrTouchEvents.getLastPosition()) && pararJogo){
+            vrGameManager.setCurrentScene(0);
         }
 
     }
@@ -272,8 +289,7 @@ public class CenaJogo extends AGScene {
         carro.bVisible = true;
         restart.bVisible = false;
         menuOpcoes.bVisible = false;
-//        velocidade = 0;
-
+        botaoSair.bVisible = false;
         pararJogo = false;
     }
 }

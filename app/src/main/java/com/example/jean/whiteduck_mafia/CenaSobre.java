@@ -1,6 +1,7 @@
 package com.example.jean.whiteduck_mafia;
 
 import com.example.jean.whiteduck_mafia.AndGraph.AGGameManager;
+import com.example.jean.whiteduck_mafia.AndGraph.AGInputManager;
 import com.example.jean.whiteduck_mafia.AndGraph.AGScene;
 
 public class CenaSobre extends AGScene {
@@ -25,6 +26,8 @@ public class CenaSobre extends AGScene {
 
     @Override
     public void loop() {
-
+        if (AGInputManager.vrTouchEvents.backButtonClicked()){
+            vrGameManager.setCurrentScene(0);
+        }
     }
 }
