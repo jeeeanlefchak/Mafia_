@@ -23,6 +23,8 @@ public class CenaJogo extends AGScene {
     Boolean pararJogo = false;
     private float ultimaPosicaoXTela = 0;
     AGSprite policia = null;
+    AGSprite menuOpcoes = null;
+    AGSprite restart = null;
 
     private int sirene;
     private float volumePolicia = 0.0f;
@@ -49,13 +51,22 @@ public class CenaJogo extends AGScene {
                 AGScreenManager.iScreenHeight + fundo2.getSpriteHeight() / 2 );
         fundo2.vrDirection.setY(-1);
 
+        this.jogo();
+    }
+
+    public void jogo(){
+        carro = null;
+        veiculos = new Veiculos(this);
+        policia = null;
+        placar = new AGSprite[8];
+        explosao = null;
+        tempoVelocidade = new AGTimer(100);
+        menuOpcoes = null;
+
         carro = createSprite(R.mipmap.car1,1,1);
         carro.setScreenPercent(12, 19);
         carro.vrPosition.setXY(AGScreenManager.iScreenWidth / 2,
                 AGScreenManager.iScreenHeight / 3 );
-
-
-        veiculos = new Veiculos(this);
         veiculos.carregarVeiculos();
         policia = createSprite(R.mipmap.policia,2,1);
         policia.setScreenPercent(12, 19);
@@ -65,7 +76,6 @@ public class CenaJogo extends AGScene {
         sirene = AGSoundManager.vrSoundEffects.loadSoundEffect("sirene.wav");
         tempoCarregarSirene = new AGTimer(1000);
 
-        placar = new AGSprite[8];
         for (int iIndex = 0; iIndex < 8; iIndex++) {
             placar[iIndex] = createSprite(R.mipmap.fonte, 4, 4);
             placar[iIndex].setScreenPercent(8, 8);
@@ -77,26 +87,24 @@ public class CenaJogo extends AGScene {
             }
         }
 
-//        policia = createSprite(R.mipmap.policia,2,1);
-//        policia.setScreenPercent(12,20);
-//        policia.vrPosition.setXY(AGScreenManager.iScreenWidth / 2,
-//                                    policia.getSpriteHeight() / 2);
-//        policia.addAnimation(2,true,0,1);
-//        policia.bVisible = false;
-//
-//        caminhao = createSprite(R.mipmap.caminhao, 1, 1);
-//        caminhao.setScreenPercent(18, 30);
-//        caminhao.vrPosition.setX(AGScreenManager.iScreenWidth / 2);
-//        caminhao.vrPosition.setY(AGScreenManager.iScreenHeight + (AGScreenManager.iScreenHeight / 2));
-//        caminhao.vrDirection.setX(-1);
-//
         explosao = createSprite(R.mipmap.explosao, 4, 2);
         explosao.setScreenPercent(15, 9);
         explosao.addAnimation(15, false, 0, 1, 2, 3, 4, 5, 6, 7);
         explosao.bVisible = false;
 
-        tempoVelocidade = new AGTimer(100);
         ultimaPosicaoXTela = AGScreenManager.iScreenWidth / 2;
+
+        menuOpcoes = createSprite(R.mipmap.pause_menu_bckg,1,1);
+        menuOpcoes.setScreenPercent(80,80);
+        menuOpcoes.bVisible = false;
+        menuOpcoes.vrPosition.setXY(AGScreenManager.iScreenWidth / 2,
+                AGScreenManager.iScreenHeight / 2);
+
+        restart = createSprite(R.mipmap.ic_launcher_round,1,1);
+        restart.setScreenPercent(25,25);
+        restart.vrPosition.setXY(AGScreenManager.iScreenWidth / 2,
+                AGScreenManager.iScreenHeight / 2);
+        restart.bVisible = false;
     }
 
     public void render(){
@@ -127,6 +135,7 @@ public class CenaJogo extends AGScene {
             this.atualizaPlacar();
             this.atualizaPolicia();
         }
+        this.acaoes();
     }
 
     public void atualizaFundo(){
@@ -179,6 +188,8 @@ public class CenaJogo extends AGScene {
                 explosao.vrPosition.setXY(carro.vrPosition.getX(), carro.vrPosition.getY());
                 explosao.bVisible = true;
                 pararJogo = true;
+                menuOpcoes.bVisible = true;
+                restart.bVisible = true;
             }
         }
     }
@@ -242,5 +253,27 @@ public class CenaJogo extends AGScene {
             placar[2].setCurrentAnimation((valorPlacar % 1000000) / 100000);
             placar[1].setCurrentAnimation((valorPlacar % 10000000) / 1000000);
             placar[0].setCurrentAnimation((valorPlacar % 100000000) / 10000000);
+    }
+
+    public void acaoes(){
+        if (AGInputManager.vrTouchEvents.backButtonClicked()){
+            vrGameManager.setCurrentScene(0);
+        }
+        if (restart.collide(AGInputManager.vrTouchEvents.getLastPosition())){
+            this.novoJogo();
+        }
+
+    }
+    public void novoJogo(){
+        pararJogo = false;
+        for(int i =0; i < veiculos.veiculos.size(); i++){
+            veiculos.veiculos.get(i).sprite.bVisible = true;
+        }
+        carro.bVisible = true;
+        restart.bVisible = false;
+        menuOpcoes.bVisible = false;
+//        velocidade = 0;
+
+        pararJogo = false;
     }
 }
