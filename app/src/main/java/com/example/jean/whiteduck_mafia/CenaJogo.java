@@ -1,5 +1,8 @@
 package com.example.jean.whiteduck_mafia;
 
+import android.content.Intent;
+
+import com.example.jean.whiteduck_mafia.AndGraph.AGActivityGame;
 import com.example.jean.whiteduck_mafia.AndGraph.AGGameManager;
 import com.example.jean.whiteduck_mafia.AndGraph.AGInputManager;
 import com.example.jean.whiteduck_mafia.AndGraph.AGScene;
@@ -84,10 +87,11 @@ public class CenaJogo extends AGScene {
         ultimaPosicaoXTela = AGScreenManager.iScreenWidth / 2;
 
         menuOpcoes = createSprite(R.mipmap.pause_menu_bckg,1,1);
-        menuOpcoes.setScreenPercent(80,80);
+        menuOpcoes.setScreenPercent(100,100);
         menuOpcoes.bVisible = false;
         menuOpcoes.vrPosition.setXY(AGScreenManager.iScreenWidth / 2,
                 AGScreenManager.iScreenHeight / 2);
+        menuOpcoes.bAutoRender = false;
 
         restart = createSprite(R.mipmap.btn_restart_anim,5,4);
         restart.setScreenPercent(30,18);
@@ -95,6 +99,7 @@ public class CenaJogo extends AGScene {
                 AGScreenManager.iScreenHeight / 2);
         restart.addAnimation(13,true,0,17);
         restart.bVisible = false;
+        restart.bAutoRender = false;
 
         botaoSair = createSprite(R.mipmap.btn_exit_anim,5,4);
         botaoSair.setScreenPercent(30,18);
@@ -102,6 +107,8 @@ public class CenaJogo extends AGScene {
                 restart.vrPosition.fY - restart.getSpriteHeight() / 6 - botaoSair.getSpriteHeight() / 1 );
         botaoSair.addAnimation(13,true,0,17);
         botaoSair.bVisible = false;
+        botaoSair.bAutoRender = false;
+
         for (int iIndex = 0; iIndex < 8; iIndex++) {
             placar[iIndex] = createSprite(R.mipmap.fonte, 4, 4);
             placar[iIndex].setScreenPercent(8, 8);
@@ -116,9 +123,12 @@ public class CenaJogo extends AGScene {
 
     public void render(){
         super.render();
+        menuOpcoes.render();
         for(AGSprite digito : placar){
             digito.render();
         }
+        restart.render();
+        botaoSair.render();
     }
 
     @Override
@@ -202,6 +212,8 @@ public class CenaJogo extends AGScene {
                     placar[iIndex].vrPosition.setY(AGScreenManager.iScreenWidth +  AGScreenManager.iScreenWidth / 4);
                     placar[iIndex].vrPosition.setX(placar[iIndex].getSpriteWidth() * 3 + iIndex * placar[iIndex].getSpriteWidth());
                 }
+
+                break;
             }
         }
     }
@@ -280,10 +292,9 @@ public class CenaJogo extends AGScene {
 
     }
     public void novoJogo(){
-        pararJogo = false;
-        for(int i =0; i < veiculos.veiculos.size(); i++){
+        /*for(int i =0; i < veiculos.veiculos.size(); i++){
             veiculos.veiculos.get(i).sprite.bVisible = true;
-        }
+        }*/
         carro.bVisible = true;
         restart.bVisible = false;
         menuOpcoes.bVisible = false;
@@ -292,10 +303,18 @@ public class CenaJogo extends AGScene {
             placar[iIndex].vrPosition.setY(AGScreenManager.iScreenHeight - placar[iIndex].getSpriteHeight() / 2);
             placar[iIndex].vrPosition.setX(placar[iIndex].getSpriteWidth() / 2 + iIndex * placar[iIndex].getSpriteWidth());
         }
-          this.valorPlacar = 0;
-//        tempoVelocidade = new AGTimer(100);
-//        velocidade = 1;
-//        controlaVelocidade();
+        this.valorPlacar = 0;
+        tempoVelocidade = new AGTimer(100);
+        velocidade = 0;
         pararJogo = false;
+
+        carro.vrPosition.setXY(AGScreenManager.iScreenWidth / 2,
+                AGScreenManager.iScreenHeight / 3 );
+
+        policia.vrPosition.setXY(veiculos.posicoesFaixas.get(2),
+                (AGScreenManager.iScreenHeight * 5) * -1);
+
+        ultimaPosicaoXTela = 0;
+        veiculos.resetar();
     }
 }

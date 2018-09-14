@@ -182,4 +182,12 @@ public class Veiculos {
         }
     }
 
+    public void resetar() {
+        for (int i = 0; i < this.veiculos.size(); i++) {
+            this.scene.removeSprite(veiculos.get(i).sprite);
+        }
+        this.veiculos = new ArrayList<>();
+        this.carregarVeiculos();
+    }
+
 }
